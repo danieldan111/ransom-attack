@@ -79,10 +79,13 @@ def switch_keys(conn):
 
 
 def connect_to_server(sock, addr, attack):
-    try:
-        sock.connect(addr)
-    except Exception as e:
-        return
+    while True:
+        try:
+            sock.connect(addr)
+        except Exception as e:
+            continue
+        else:
+            break
     
     aes_key, aes_iv = switch_keys(sock)
     secured_conn = Secured_socket(sock, HEADER, aes_key, aes_iv)
